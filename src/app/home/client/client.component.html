@@ -1,0 +1,71 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #04C582;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Configure Info</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+        <div class="d-flex">
+          <button class="btn btn-success" (click)="ShowModal()">Add Configure</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="text-center" *ngIf="isLoad">
+    <div class="spinner-border" style="width: 8rem; height: 8rem; margin-top: 20px;" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  <table class="table table-hover table-dark" *ngIf="!isLoad">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Field</th>
+        <th scope="col">Created By</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of ClientList;let i=index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{item.name}}</td>
+        <td>{{item.userName}}</td>
+        <td><button type="button" class="btn btn-info" (click)="Edit(item.id)">Edit</button> || 
+          <button type="button" class="btn btn-danger" (click)="Delete(item.id)">Delete</button> ||
+          <button type="button" class="btn btn-light" (click)="Select(item.id)">Select</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+    <!-- Modal -->
+  <div class="modal fade" id="clientModal"  tabindex="-1" role="dialog" 
+    aria-labelledby="clientModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="clientModalLabel">Configure</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <form [formGroup]="fmgClient">
+                <div class="modal-body">
+                    <div class="form-group">
+                    <label for="fistName">Field</label>
+                    <input type="text" formControlName="Name" [ngClass]="{ 'is-invalid': fmgClient.get('Name').errors && fmgClient.get('Name').touched }"
+                        id="fistName" class="form-control"  placeholder="Enter Name">
+                    <div class="invalid-feedback" *ngIf="fmgClient.get('Name').errors
+                        && fmgClient.get('Name').touched">You can't leave this empty.</div>
+                    </div>
+                </div>
+                <div class="modal-footer" *ngIf="!isSelect">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" *ngIf="!isSave" (click)="AddOrEdit()">Submit</button>
+                    <button type="button" class="btn btn-primary" *ngIf="isSave" disabled>Saving..</button>
+                </div>
+            </form>
+        </div>
+      </div>
+  </div>
